@@ -69,23 +69,6 @@ class Agent:
         Must be implemented on the child class
         '''
         raise NotImplementedError
-    
-    def _possible_actions(self, state):
-        '''
-        Method to get possible actions in greedy chocolate game
-        Input:
-            state: array : current state
-        Output:
-            actions: array : All possible actions given current state
-        '''
-        actions = []
-        
-        for box_num in range(len(state)):
-            
-            for choc_num in range(1, state[box_num] + 1):
-                actions.append([box_num+1, choc_num])
-                
-        return actions
 
     def save_model(self, filename):
         '''
@@ -130,12 +113,18 @@ class RandomAgent(Agent):
     def __init__(self):
         super().__init__()
         
-    def get_value(self, state):
+    def get_value(self, state, possible_actions):
         '''
         Method to get value on a given state
+
+        Input:
+            state: str
+                current state
+            possible_actions: list
+                list of all possible action given the state
         '''
-        # Get all actions
-        actions = self._possible_actions(state)
+        # Get all possible actions
+        actions = possible_actions.copy()
 
         # Get all q value of all state and actions
         q_val = [self.get_qvalue(state, action) for action in actions]
@@ -146,14 +135,18 @@ class RandomAgent(Agent):
         # Expected q value of taking action randomly
         return np.sum(q_val) / len(q_val)
         
-    def get_action(self, state):
+    def get_action(self, possible_actions):
         
         '''
         Method to get action given state
+
+        Input:
+            possible_actions: list
+                list of all possible action
         '''
         
         # Get all possible actions
-        actions = self._possible_actions(state)
+        actions = possible_actions.copy()
         
         # Return none if no valid action
         if len(actions) == 0:

@@ -5,7 +5,7 @@ import numpy as np
 
 class QLearningAgent(Agent):
     '''
-    1-step off-policy Q learning agent
+    1-step off-policy Q learning agent with epsilon greedy method
     '''
     
     def __init__(self, alpha, epsilon, discount):
@@ -33,7 +33,7 @@ class QLearningAgent(Agent):
         '''
         self.epsilon = eps
         
-    def get_value(self, state):
+    def get_value(self, state, possible_actions):
         '''
         Function to get value function 
         V(s) = max(Q(s, a))
@@ -43,13 +43,13 @@ class QLearningAgent(Agent):
         Output:
             value: Float : value of a state
         '''
-        actions = self._possible_actions(state)
+        actions = possible_actions.copy()
         q_val = [self.get_qvalue(state, action) for action in actions]
         if len(q_val) == 0:
             return 0
         return np.max(q_val)
         
-    def get_best_action(self, state):
+    def get_best_action(self, state, possible_actions):
         '''
         Get the best action to take with a given state
         returns the action with maximum q values
@@ -59,7 +59,7 @@ class QLearningAgent(Agent):
         Output:
             action: array : best action
         '''
-        actions = self._possible_actions(state)
+        actions = possible_actions.copy()
         
         if len(actions) == 0:
             return None
@@ -67,7 +67,7 @@ class QLearningAgent(Agent):
         q_val = [self.get_qvalue(state, action) for action in actions]
         return actions[np.argmax(q_val)]
         
-    def get_action(self, state):
+    def get_action(self, state, possible_actions):
         
         '''
         Method to get action given a current state
@@ -79,7 +79,7 @@ class QLearningAgent(Agent):
         '''
 
         # Get all possible actions
-        actions = self._possible_actions(state)
+        actions = possible_actions.copy()
         
 
         # If there are no legal actions, return None
@@ -141,7 +141,7 @@ class ExpectedSarsaAgent(QLearningAgent):
         '''
         super().__init__(alpha, epsilon, discount)
 
-    def get_value(self, state):
+    def get_value(self, state, possible_actions):
         '''
         Override get_value function from QLearningAgent
         V(s) = E[Q(s, a)] = sum (p(a|s) * Q(s, a))
@@ -151,7 +151,7 @@ class ExpectedSarsaAgent(QLearningAgent):
         Output:
             value: Float : value of a state
         '''
-        actions = self._possible_actions(state)
+        actions = possible_actions.copy()
         q_val = [self.get_qvalue(state, action) for action in actions]
         if len(q_val) == 0:
             return 0
