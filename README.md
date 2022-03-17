@@ -1,3 +1,10 @@
 # Tabular-RL-agent
 
-Under Maintanance
+A collection of tabular reinforcement learning agent. 
+
+### Current Agent:
+ * Random agent
+ * 1-step Q-Learning agent
+ * 1-step Expected SARSA agent
+
+More upcoming agent soon!
