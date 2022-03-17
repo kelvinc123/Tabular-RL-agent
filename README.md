@@ -2,7 +2,7 @@
 
 A collection of tabular reinforcement learning agent. 
 
-### Current Agent:
+### Current Availale Agent:
  * Random agent
  * 1-step Q-Learning agent
  * 1-step Expected SARSA agent
